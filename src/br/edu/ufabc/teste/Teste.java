@@ -6,6 +6,8 @@
 package br.edu.ufabc.teste;
 
 import br.edu.ufabc.OpenNLP.TesteOpenNLP;
+import br.edu.ufabc.util.Util;
+import java.io.File;
 
 /**
  *
@@ -17,12 +19,19 @@ public class Teste {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        String text = "I am Luffy, the best warrior of the seas.";
-        TesteOpenNLP t = new TesteOpenNLP();
-        //t.sentenceDetector("text");
-        String[] tokens = t.tokenizer(text);
-        String[] taggedText = t.posTagger(tokens);
-        t.printPosTaggedText(tokens, taggedText);
+//        String text = "I am Luffy, the best warrior of the seas.";
+//        TesteOpenNLP t = new TesteOpenNLP();
+//        //t.sentenceDetector("text");
+//        String[] tokens = t.tokenizer(text);
+//        String[] taggedText = t.posTagger(tokens);
+//        t.printPosTaggedText(tokens, taggedText);
+        
+        
+        //Util.lerNomeArquivos();
+       Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0); 
     }
+    
+    
+    
 
 }
