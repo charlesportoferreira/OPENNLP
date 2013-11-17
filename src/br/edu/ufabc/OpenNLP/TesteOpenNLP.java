@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package testeopennlp;
+package br.edu.ufabc.OpenNLP;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,18 +22,7 @@ import opennlp.tools.tokenize.TokenizerModel;
  */
 public class TesteOpenNLP {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        String text = "I am Luffy, the best warrior of the seas.";
-        TesteOpenNLP t = new TesteOpenNLP();
-        //t.sentenceDetector("text");
-        String[] tokens = t.tokenizer(text);
-        String[] taggedText = t.posTagger(tokens);
-        t.printPosTaggedText(tokens, taggedText);
-    }
-
+    
     public String[] sentenceDetector(String text) {
         SentenceDetector sentenceDetector = null;
         InputStream modelIn = null;
