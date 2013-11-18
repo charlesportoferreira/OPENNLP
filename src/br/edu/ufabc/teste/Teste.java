@@ -8,6 +8,13 @@ package br.edu.ufabc.teste;
 import br.edu.ufabc.OpenNLP.TesteOpenNLP;
 import br.edu.ufabc.util.Util;
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,18 +27,42 @@ public class Teste {
      */
     public static void main(String[] args) {
 //        String text = "I am Luffy, the best warrior of the seas.";
-//        TesteOpenNLP t = new TesteOpenNLP();
+        TesteOpenNLP t = new TesteOpenNLP();
 //        //t.sentenceDetector("text");
 //        String[] tokens = t.tokenizer(text);
 //        String[] taggedText = t.posTagger(tokens);
 //        t.printPosTaggedText(tokens, taggedText);
-        
-        
+
         //Util.lerNomeArquivos();
-       Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0); 
+        // Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0); 
+        // Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/abc/"), 0);
+        List<String> textos = Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0);
+        Set<String> verbos = new HashSet<>();
+        for (String texto : textos) {
+            if (texto.contains(".txt")) {
+                try {
+                    String[] tokens = t.tokenizer(Util.lerArquivo(texto));
+                    String[] taggedText = t.posTagger(tokens);
+                    //t.printPosTaggedText(tokens, taggedText);
+                    verbos.addAll(t.getVerbos(tokens, taggedText));
+
+                } catch (IOException ex) {
+                    Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+        for (String verbo : verbos) {
+            System.out.println(verbo);
+        }
+        System.out.println(verbos.size());
+        String stopList = Util.insertStopListTag(verbos);
+        System.out.println(stopList);
+        try {
+            Util.printFile("/Users/charleshenriqueportoferreira/arrrr.xml", stopList);
+        } catch (IOException ex) {
+            Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-    
-    
-    
 
 }

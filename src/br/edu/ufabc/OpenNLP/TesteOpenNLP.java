@@ -7,6 +7,8 @@ package br.edu.ufabc.OpenNLP;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.sentdetect.SentenceDetector;
@@ -22,7 +24,6 @@ import opennlp.tools.tokenize.TokenizerModel;
  */
 public class TesteOpenNLP {
 
-    
     public String[] sentenceDetector(String text) {
         SentenceDetector sentenceDetector = null;
         InputStream modelIn = null;
@@ -88,7 +89,7 @@ public class TesteOpenNLP {
 
             String[] taggedText = posTagger.tag(text);
 
-            System.out.println(taggedText);
+            //System.out.println(taggedText);
             return taggedText;
 
         } catch (final IOException ioe) {
@@ -112,4 +113,39 @@ public class TesteOpenNLP {
         System.out.println(finalText);
     }
 
+    public List<String> getVerbos(String[] tokens, String[] tags) {
+        List<String> verbos = new ArrayList<>();
+        for (int i = 0; i < tags.length; i++) {
+            switch (tags[i]) {
+                case "VB":
+                    verbos.add(tokens[i]);
+                    break;
+                case "VBD":
+                    verbos.add(tokens[i]);
+                    break;
+                case "VBG":
+                    verbos.add(tokens[i]);
+                    break;
+                case "VBN":
+                    verbos.add(tokens[i]);
+                    break;
+                case "VBP":
+                    verbos.add(tokens[i]);
+                    break;
+                case "VBZ":
+                    verbos.add(tokens[i]);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return verbos;
+    }
+
+//VB Verb, base form
+//VBD Verb, past tense
+//VBG Verb, gerund or present participle
+//VBN Verb, past participle
+//VBP Verb, non­3rd person singular present
+//VBZ Verb, 3rd person singular present
 }
