@@ -37,14 +37,14 @@ public class Teste {
         // Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0); 
         // Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/abc/"), 0);
         List<String> textos = Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0);
-        Set<String> verbos = new HashSet<>();
+        Set<String> adverbios = new HashSet<>();
         for (String texto : textos) {
             if (texto.contains(".txt")) {
                 try {
                     String[] tokens = t.tokenizer(Util.lerArquivo(texto));
                     String[] taggedText = t.posTagger(tokens);
                     //t.printPosTaggedText(tokens, taggedText);
-                    verbos.addAll(t.getVerbos(tokens, taggedText));
+                    adverbios.addAll(t.getAdverbios(tokens, taggedText));
 
                 } catch (IOException ex) {
                     Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
@@ -52,14 +52,14 @@ public class Teste {
             }
         }
 
-        for (String verbo : verbos) {
+        for (String verbo : adverbios) {
             System.out.println(verbo);
         }
-        System.out.println(verbos.size());
-        String stopList = Util.insertStopListTag(verbos);
+        System.out.println(adverbios.size());
+        String stopList = Util.insertStopListTag(adverbios);
         System.out.println(stopList);
         try {
-            Util.printFile("/Users/charleshenriqueportoferreira/arrrr.xml", stopList);
+            Util.printFile("/Users/charleshenriqueportoferreira/adverbios.xml", stopList);
         } catch (IOException ex) {
             Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
         }
