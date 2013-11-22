@@ -22,7 +22,7 @@ import java.util.Set;
  */
 public class Util {
 
-    public static List<String> filePaths;
+    public static List<String>  filePaths = new ArrayList<>();
 
     public static void lerNomeArquivos() {
         // Use assim (exemplo): 
@@ -39,7 +39,7 @@ public class Util {
     }
 
     public static List<String> fileTreePrinter(File initialPath, int initialDepth) {
-        filePaths = new ArrayList<>();
+       
         int depth = initialDepth++;
         if (initialPath.exists()) {
             File[] contents = initialPath.listFiles();
@@ -52,7 +52,7 @@ public class Util {
                         dpt[j] = '+';
                     }
                     // System.out.println(new String(dpt) + content.getName() + " " + content.getPath() );
-                    //System.out.println(content.toString());
+                    System.out.println(content.toString());
                     filePaths.add(content.toString());
                 }
             }

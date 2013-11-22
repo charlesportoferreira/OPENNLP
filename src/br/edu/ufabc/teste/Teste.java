@@ -37,6 +37,8 @@ public class Teste {
         // Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0); 
         // Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/abc/"), 0);
         List<String> textos = Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0);
+        String diretorio = System.getProperty("user.dir");
+        //List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
         Set<String> adverbios = new HashSet<>();
         for (String texto : textos) {
             if (texto.contains(".txt")) {
