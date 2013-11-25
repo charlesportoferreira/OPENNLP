@@ -5,10 +5,17 @@
  */
 package br.edu.ufabc.OpenNLP;
 
+import br.edu.ufabc.teste.Teste;
+import br.edu.ufabc.util.Util;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import opennlp.tools.postag.POSModel;
 import opennlp.tools.postag.POSTaggerME;
 import opennlp.tools.sentdetect.SentenceDetector;
@@ -160,6 +167,93 @@ public class TesteOpenNLP {
             }
         }
         return adverbios;
+    }
+
+    public void geraVerboStopList() {
+
+        //List<String> textos = Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0);
+        String diretorio = System.getProperty("user.dir");
+        List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
+        Set<String> verbos = new HashSet<>();
+        for (int i = 0; i < textos.size(); i++) {
+            String texto = textos.get(i);
+            //for (String texto : textos) {
+            if (texto.contains(".txt")) {
+                try {
+                    String[] tokens = tokenizer(Util.lerArquivo(texto));
+                    String[] taggedText = posTagger(tokens);
+                    //t.printPosTaggedText(tokens, taggedText);
+                    verbos.addAll(getVerbos(tokens, taggedText));
+                    //imprime de dez em dez %
+                    // if ((i * 100.0 / textos.size()) % 10.0 == 0) {
+                    System.out.println(i * 100 / textos.size() + "%");
+                    // }
+
+                } catch (IOException ex) {
+                    Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            //}
+        }
+
+//        for (String verbo : verbos) {
+//            System.out.println(verbo);
+//        }
+        System.out.println("Número de verbos: " + verbos.size());
+        String stopList = Util.insertStopListTag(verbos);
+        //System.out.println(stopList);
+        try {
+            Util.printFile(diretorio + "/verbos.xml", stopList);
+        } catch (IOException ex) {
+            Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void geraAdverbiosStopList() {
+
+        //List<String> textos = Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0);
+        String diretorio = System.getProperty("user.dir");
+        List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
+        Set<String> adverbios = new HashSet<>();
+        for (int i = 0; i < textos.size(); i++) {
+            String texto = textos.get(i);
+            if (texto.contains(".txt")) {
+                try {
+                    String[] tokens = tokenizer(Util.lerArquivo(texto));
+                    String[] taggedText = posTagger(tokens);
+                    //t.printPosTaggedText(tokens, taggedText);
+                    adverbios.addAll(getAdverbios(tokens, taggedText));
+                    // if ((i * 100.0 / textos.size()) % 10.0 == 0) {
+                    System.out.println(i * 100 / textos.size() + "%");
+                    // }
+
+                } catch (IOException ex) {
+                    Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+
+//        for (String verbo : verbos) {
+//            System.out.println(verbo);
+//        }
+        System.out.println("Número de adverbios: " + adverbios.size());
+        String stopList = Util.insertStopListTag(adverbios);
+        //System.out.println(stopList);
+        try {
+            Util.printFile(diretorio + "/adverbios.xml", stopList);
+        } catch (IOException ex) {
+            Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void printFilesPath() {
+        String diretorio = System.getProperty("user.dir");
+        List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
+        for (String texto : textos) {
+            if (texto.contains(".txt")) {
+                System.out.println(texto);
+            }
+        }
     }
 
 //1. CC Coordinating conjunction 2. CD Cardinal number

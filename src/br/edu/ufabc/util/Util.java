@@ -52,7 +52,7 @@ public class Util {
                         dpt[j] = '+';
                     }
                     // System.out.println(new String(dpt) + content.getName() + " " + content.getPath() );
-                    System.out.println(content.toString());
+                    //System.out.println(content.toString());
                     filePaths.add(content.toString());
                 }
             }
