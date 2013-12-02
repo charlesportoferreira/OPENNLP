@@ -171,34 +171,28 @@ public class TesteOpenNLP {
 
     public void geraVerboStopList() {
 
-        //List<String> textos = Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0);
         String diretorio = System.getProperty("user.dir");
         List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
         Set<String> verbos = new HashSet<>();
         for (int i = 0; i < textos.size(); i++) {
-            String texto = textos.get(i);
-            //for (String texto : textos) {
-            if (texto.contains(".txt")) {
+            String textPath = textos.get(i);
+            if (textPath.contains(".txt")) {
                 try {
-                    String[] tokens = tokenizer(Util.lerArquivo(texto));
+                    System.out.print("\r" + "Lendo o arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+                    String[] tokens = tokenizer(Util.lerArquivo(textPath));
+                    System.out.print("\r" + "Adicionando tags ao arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
                     String[] taggedText = posTagger(tokens);
-                    //t.printPosTaggedText(tokens, taggedText);
+                    System.out.print("\r" + "extraindo verbos do arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
                     verbos.addAll(getVerbos(tokens, taggedText));
-                    //imprime de dez em dez %
-                    // if ((i * 100.0 / textos.size()) % 10.0 == 0) {
-                    System.out.println(i * 100 / textos.size() + "%");
-                    // }
+                    System.out.print("\r" + "Analisado arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
 
                 } catch (IOException ex) {
                     Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-            //}
-        }
 
-//        for (String verbo : verbos) {
-//            System.out.println(verbo);
-//        }
+            }
+        }
+        System.out.println("");
         System.out.println("Número de verbos: " + verbos.size());
         String stopList = Util.insertStopListTag(verbos);
         //System.out.println(stopList);
@@ -211,34 +205,30 @@ public class TesteOpenNLP {
 
     public void geraAdverbiosStopList() {
 
-        //List<String> textos = Util.fileTreePrinter(new File("/Users/charleshenriqueportoferreira/Dropbox/pretext/textos/"), 0);
         String diretorio = System.getProperty("user.dir");
         List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
         Set<String> adverbios = new HashSet<>();
         for (int i = 0; i < textos.size(); i++) {
-            String texto = textos.get(i);
-            if (texto.contains(".txt")) {
+            String textPath = textos.get(i);
+            if (textPath.contains(".txt")) {
                 try {
-                    String[] tokens = tokenizer(Util.lerArquivo(texto));
+                    System.out.print("\r" + "Lendo o arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+                    String[] tokens = tokenizer(Util.lerArquivo(textPath));
+                    System.out.print("\r" + "Adicionando tags ao arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
                     String[] taggedText = posTagger(tokens);
-                    //t.printPosTaggedText(tokens, taggedText);
+                    System.out.print("\r" + "extraindo adverbos do arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
                     adverbios.addAll(getAdverbios(tokens, taggedText));
-                    // if ((i * 100.0 / textos.size()) % 10.0 == 0) {
-                    System.out.println(i * 100 / textos.size() + "%");
-                    // }
+                    System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
 
                 } catch (IOException ex) {
                     Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
                 }
+
             }
         }
-
-//        for (String verbo : verbos) {
-//            System.out.println(verbo);
-//        }
+        System.out.println("");
         System.out.println("Número de adverbios: " + adverbios.size());
         String stopList = Util.insertStopListTag(adverbios);
-        //System.out.println(stopList);
         try {
             Util.printFile(diretorio + "/adverbios.xml", stopList);
         } catch (IOException ex) {
@@ -256,31 +246,37 @@ public class TesteOpenNLP {
         }
     }
 
-//1. CC Coordinating conjunction 2. CD Cardinal number
+//1. CC Coordinating conjunction
+//2. CD Cardinal number
 //3. DT Determiner
 //4. EX Existential there
 //5. FW Foreign word
 //6. IN Preposition or subordinating conjunction
 //7. JJ Adjective
 //8. JJR Adjective, comparative
-//9. JJS Adjective, superlative 10. LS List item marker
+//9. JJS Adjective, superlative 
+//10. LS List item marker
 //11. MD Modal
-//12. NN Noun, singular or mass 13. NNS Noun, plural
-//14. NNP Proper noun, singular 15. NNPS Proper noun, plural 16. PDT Predeterminer
+//12. NN Noun, singular or mass 
+//13. NNS Noun, plural
+//14. NNP Proper noun, singular 
+//15. NNPS Proper noun, plural 
+//16. PDT Predeterminer
 //17. POS Possessive ending
 //18. PRP Personal pronoun
 //19. PRP$ Possessive pronoun
 //20. RB Adverb
 //21. RBR Adverb, comparative
-//22. RBS Adverb, superlative 23. RP Particle
+//22. RBS Adverb, superlative 
+//23. RP Particle
 //24. SYM Symbol
 //25. TO to
 //26. UH Interjection
 //27. VB Verb, base form
 //28. VBD Verb, past tense
-//29. VBG Verb, gerund or present participle 30. VBN Verb, past participle
+//29. VBG Verb, gerund or present participle 
 //30. VBN Verb, past participle
-//31. VBP Verb, non​3rd person singular present 32. VBZ Verb, 3rd person singular present
+//31. VBP Verb, non​3rd person singular present 
 //32. VBZ Verb, 3rd person singular present
 //33. WDT Wh​determiner
 //34. WP Wh​pronoun
