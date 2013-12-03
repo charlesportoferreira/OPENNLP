@@ -176,21 +176,20 @@ public class TesteOpenNLP {
         Set<String> verbos = new HashSet<>();
         for (int i = 0; i < textos.size(); i++) {
             String textPath = textos.get(i);
-            if (textPath.contains(".txt")) {
-                try {
-                    System.out.print("\r" + "Lendo o arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
-                    String[] tokens = tokenizer(Util.lerArquivo(textPath));
-                    System.out.print("\r" + "Adicionando tags ao arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
-                    String[] taggedText = posTagger(tokens);
-                    System.out.print("\r" + "extraindo verbos do arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
-                    verbos.addAll(getVerbos(tokens, taggedText));
-                    System.out.print("\r" + "Analisado arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
 
-                } catch (IOException ex) {
-                    Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            try {
+                //System.out.print("\r" + "Lendo o arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+                String[] tokens = tokenizer(Util.lerArquivo(textPath));
+                //System.out.print("\r" + "Adicionando tags ao arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+                String[] taggedText = posTagger(tokens);
+                // System.out.print("\r" + "extraindo verbos do arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+                verbos.addAll(getVerbos(tokens, taggedText));
+                System.out.print("\r" + "Analisado arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
 
+            } catch (IOException ex) {
+                Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
         System.out.println("");
         System.out.println("Número de verbos: " + verbos.size());
@@ -210,21 +209,20 @@ public class TesteOpenNLP {
         Set<String> adverbios = new HashSet<>();
         for (int i = 0; i < textos.size(); i++) {
             String textPath = textos.get(i);
-            if (textPath.contains(".txt")) {
-                try {
-                    System.out.print("\r" + "Lendo o arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
-                    String[] tokens = tokenizer(Util.lerArquivo(textPath));
-                    System.out.print("\r" + "Adicionando tags ao arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
-                    String[] taggedText = posTagger(tokens);
-                    System.out.print("\r" + "extraindo adverbos do arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
-                    adverbios.addAll(getAdverbios(tokens, taggedText));
-                    System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
 
-                } catch (IOException ex) {
-                    Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
-                }
+            try {
+                //  System.out.print("\r" + "Lendo o arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+                String[] tokens = tokenizer(Util.lerArquivo(textPath));
+                //  System.out.print("\r" + "Adicionando tags ao arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+                String[] taggedText = posTagger(tokens);
+                //   System.out.print("\r" + "extraindo adverbos do arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+                adverbios.addAll(getAdverbios(tokens, taggedText));
+                System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
 
+            } catch (IOException ex) {
+                Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
             }
+
         }
         System.out.println("");
         System.out.println("Número de adverbios: " + adverbios.size());
@@ -280,5 +278,6 @@ public class TesteOpenNLP {
 //32. VBZ Verb, 3rd person singular present
 //33. WDT Wh​determiner
 //34. WP Wh​pronoun
-//35. WP$ Possessive wh​pronoun 36. WRB Wh​adverb
+//35. WP$ Possessive wh​pronoun 
+//36. WRB Wh​adverb
 }

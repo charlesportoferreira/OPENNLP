@@ -6,7 +6,8 @@
 package br.edu.ufabc.teste;
 
 import br.edu.ufabc.OpenNLP.TesteOpenNLP;
-
+import br.edu.ufabc.util.Util;
+import java.util.List;
 
 /**
  *
@@ -38,6 +39,7 @@ public class Teste {
                     break;
             }
         } else {
+
             
             help();
         }
