@@ -68,6 +68,7 @@ public class Util {
         try (FileReader fr = new FileReader(filePath); BufferedReader br = new BufferedReader(fr)) {
             while (br.ready()) {
                 linha.append(br.readLine());
+                linha.append("\n");
             }
             br.close();
             fr.close();
