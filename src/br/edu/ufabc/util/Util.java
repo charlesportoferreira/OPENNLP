@@ -79,7 +79,13 @@ public class Util {
     public static String insertStopListTag(Set<String> verbos) {
         StringBuilder stopList = new StringBuilder();
         for (String verbo : verbos) {
-            stopList.append("<stopword>").append(verbo).append("</stopword>").append("\n");
+
+            if (verbo.matches(".*[^a-z].*") & verbo.matches(".*[^A-Z].*")) {
+                System.out.println(verbo);
+            } else {
+                 stopList.append("<stopword>").append(verbo).append("</stopword>").append("\n");
+                //stopList.append(verbo).append("\n");
+            }
         }
         return stopList.toString();
     }

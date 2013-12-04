@@ -30,6 +30,9 @@ public class Teste {
                 case "-v":
                     t.geraVerboStopList();
                     break;
+                case "-ptt":
+                    t.printTokensAndTags();
+                    break;
                 case "-ad":
                     t.geraAdverbiosStopList();
                     break;
@@ -40,7 +43,6 @@ public class Teste {
             }
         } else {
 
-            
             help();
         }
 

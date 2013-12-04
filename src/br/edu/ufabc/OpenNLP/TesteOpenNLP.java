@@ -184,7 +184,7 @@ public class TesteOpenNLP {
                 String[] taggedText = posTagger(tokens);
                 // System.out.print("\r" + "extraindo verbos do arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
                 verbos.addAll(getVerbos(tokens, taggedText));
-                System.out.print("\r" + "Analisado arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+                System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
 
             } catch (IOException ex) {
                 Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
@@ -242,6 +242,42 @@ public class TesteOpenNLP {
                 System.out.println(texto);
             }
         }
+    }
+
+    public void printTokensAndTags() {
+        List<String> verbos = new ArrayList();
+        String diretorio = System.getProperty("user.dir");
+        List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
+        int j = 0;
+        for (String textPath : textos) {
+            String[] tokens;
+            try {
+                j++;
+                tokens = tokenizer(Util.lerArquivo(textPath));
+                String[] taggedText = posTagger(tokens);
+                verbos.addAll(getVerbos(tokens, taggedText));
+                //System.out.println("******************" + diretorio + "**********");
+                System.out.print("\rAnalisado arquivo " + j + " de " + textos.size());
+//                for (int i = 0; i < taggedText.length; i++) {
+//                    System.out.println("token: " + tokens[i] + "     tag: " + taggedText[i]);
+//                }
+            } catch (IOException ex) {
+                Logger.getLogger(TesteOpenNLP.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+
+        for (String v : verbos) {
+            sb.append(v);
+            sb.append("\n");
+        }
+        try {
+            Util.printFile(diretorio + "/verbos.xml", sb.toString());
+        } catch (IOException ex) {
+            Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //System.out.print("\r" + "Adicionando tags ao arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+
     }
 
 //1. CC Coordinating conjunction
