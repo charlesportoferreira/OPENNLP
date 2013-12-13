@@ -5,7 +5,7 @@
  */
 package br.edu.ufabc.teste;
 
-import br.edu.ufabc.OpenNLP.TesteOpenNLP;
+import br.edu.ufabc.OpenNLP.PosTaggerOpenNLP;
 import br.edu.ufabc.util.Util;
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class Teste {
      */
     public static void main(String[] args) {
 
-        TesteOpenNLP t = new TesteOpenNLP();
+        PosTaggerOpenNLP t = new PosTaggerOpenNLP();
 
         if (args.length != 0) {
             switch (args[0]) {

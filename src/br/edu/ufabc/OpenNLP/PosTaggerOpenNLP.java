@@ -29,7 +29,7 @@ import opennlp.tools.tokenize.TokenizerModel;
  *
  * @author charleshenriqueportoferreira
  */
-public class TesteOpenNLP {
+public class PosTaggerOpenNLP {
 
     public String[] sentenceDetector(String text) {
         SentenceDetector sentenceDetector = null;
@@ -262,7 +262,7 @@ public class TesteOpenNLP {
 //                    System.out.println("token: " + tokens[i] + "     tag: " + taggedText[i]);
 //                }
             } catch (IOException ex) {
-                Logger.getLogger(TesteOpenNLP.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(PosTaggerOpenNLP.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         StringBuilder sb = new StringBuilder();
