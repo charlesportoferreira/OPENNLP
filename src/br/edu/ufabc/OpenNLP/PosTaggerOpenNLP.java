@@ -31,6 +31,17 @@ import opennlp.tools.tokenize.TokenizerModel;
  */
 public class PosTaggerOpenNLP {
 
+    InputStream modelInPosTaggger = null;
+    InputStream modelInToken = null;
+    POSTaggerME posTagger;
+    Tokenizer tokenizer;
+
+    public PosTaggerOpenNLP() {
+
+        buildPostagger();
+        buildTokenizer();
+    }
+
     public String[] sentenceDetector(String text) {
         SentenceDetector sentenceDetector = null;
         InputStream modelIn = null;
@@ -58,58 +69,14 @@ public class PosTaggerOpenNLP {
     }
 
     public String[] tokenizer(String text) {
-        Tokenizer tokenizer = null;
-        InputStream modelIn = null;
-        try {
-            // Loading tokenizer model
-            modelIn = getClass().getResourceAsStream("/resources/en-token.bin");
-            final TokenizerModel tokenModel = new TokenizerModel(modelIn);
-            modelIn.close();
-
-            tokenizer = new TokenizerME(tokenModel);
-            String[] tokens = tokenizer.tokenize(text);
-
-            return tokens;
-        } catch (final IOException ioe) {
-            ioe.printStackTrace();
-            return null;
-        } finally {
-            if (modelIn != null) {
-                try {
-                    modelIn.close();
-                } catch (final IOException e) {
-                } // oh well!
-            }
-        }
+        String[] tokens = tokenizer.tokenize(text);
+        return tokens;
     }
 
     public String[] posTagger(String[] text) {
-        Tokenizer tokenizer = null;
-        InputStream modelIn = null;
-        try {
-            // Loading tokenizer model
-            modelIn = getClass().getResourceAsStream("/resources/en-pos-maxent.bin");
-            final POSModel posModel = new POSModel(modelIn);
-            modelIn.close();
-            POSTaggerME posTagger;
-            posTagger = new POSTaggerME(posModel);
 
-            String[] taggedText = posTagger.tag(text);
-
-            //System.out.println(taggedText);
-            return taggedText;
-
-        } catch (final IOException ioe) {
-            ioe.printStackTrace();
-            return null;
-        } finally {
-            if (modelIn != null) {
-                try {
-                    modelIn.close();
-                } catch (final IOException e) {
-                } // oh well!
-            }
-        }
+        String[] taggedText = posTagger.tag(text);
+        return taggedText;
     }
 
     public void printPosTaggedText(String[] tokens, String[] tags) {
@@ -140,6 +107,9 @@ public class PosTaggerOpenNLP {
                     verbos.add(tokens[i]);
                     break;
                 case "VBZ":
+                    verbos.add(tokens[i]);
+                    break;
+                case "MD":
                     verbos.add(tokens[i]);
                     break;
                 default:
@@ -316,4 +286,50 @@ public class PosTaggerOpenNLP {
 //34. WP Wh​pronoun
 //35. WP$ Possessive wh​pronoun 
 //36. WRB Wh​adverb
+    private void buildPostagger() {
+        // Loading tokenizer model
+        modelInPosTaggger = getClass().getResourceAsStream("/resources/en-pos-maxent.bin");
+        final POSModel posModel;
+        try {
+            posModel = new POSModel(modelInPosTaggger);
+            modelInPosTaggger.close();
+//            POSTaggerME posTagger;
+            posTagger = new POSTaggerME(posModel);
+        } catch (final IOException ioe) {
+            //ioe.printStackTrace();
+            System.out.println("Erro ao tentar executar o postagger");
+        } finally {
+            if (modelInPosTaggger != null) {
+                try {
+                    modelInPosTaggger.close();
+                } catch (final IOException e) {
+                } // oh well!
+            }
+        }
+
+    }
+
+    private void buildTokenizer() {
+        try {
+
+            // Loading tokenizer model
+            modelInToken = getClass().getResourceAsStream("/resources/en-token.bin");
+            final TokenizerModel tokenModel = new TokenizerModel(modelInToken);
+            modelInToken.close();
+
+            tokenizer = new TokenizerME(tokenModel);
+
+        } catch (final IOException ioe) {
+            //ioe.printStackTrace();
+            System.out.println("Erro ao tentar executar o tokenizador");
+
+        } finally {
+            if (modelInToken != null) {
+                try {
+                    modelInToken.close();
+                } catch (final IOException e) {
+                } // oh well!
+            }
+        }
+    }
 }

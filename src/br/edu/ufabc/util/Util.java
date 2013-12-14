@@ -78,15 +78,16 @@ public class Util {
 
     public static String insertStopListTag(Set<String> verbos) {
         StringBuilder stopList = new StringBuilder();
-        for (String verbo : verbos) {
+        stopList.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>").append("\n").append("<stopfile>").append("\n");
 
-            if (verbo.matches(".*[^a-z].*") & verbo.matches(".*[^A-Z].*")) {
-                System.out.println(verbo);
-            } else {
-                 stopList.append("<stopword>").append(verbo).append("</stopword>").append("\n");
-                //stopList.append(verbo).append("\n");
+        for (String verbo : verbos) {
+            verbo = verbo.replaceAll("[^a-zA-Z]", "");
+            if (!verbo.matches("")) {
+                stopList.append("<stopword>").append(verbo).append("</stopword>").append("\n");
             }
+
         }
+        stopList.append("<stopfile>").append("\n");
         return stopList.toString();
     }
 

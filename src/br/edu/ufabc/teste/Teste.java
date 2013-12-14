@@ -6,8 +6,6 @@
 package br.edu.ufabc.teste;
 
 import br.edu.ufabc.OpenNLP.PosTaggerOpenNLP;
-import br.edu.ufabc.util.Util;
-import java.util.List;
 
 /**
  *
@@ -20,21 +18,22 @@ public class Teste {
      */
     public static void main(String[] args) {
 
-        PosTaggerOpenNLP t = new PosTaggerOpenNLP();
+        PosTaggerOpenNLP pto = new PosTaggerOpenNLP();
+      
 
         if (args.length != 0) {
             switch (args[0]) {
                 case "-p":
-                    t.printFilesPath();
+                    pto.printFilesPath();
                     break;
                 case "-v":
-                    t.geraVerboStopList();
+                    pto.geraVerboStopList();
                     break;
                 case "-ptt":
-                    t.printTokensAndTags();
+                    pto.printTokensAndTags();
                     break;
                 case "-ad":
-                    t.geraAdverbiosStopList();
+                    pto.geraAdverbiosStopList();
                     break;
                 default:
                     System.out.println("Parâmetro digitado incorretamente");
