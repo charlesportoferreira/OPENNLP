@@ -87,7 +87,7 @@ public class Util {
             }
 
         }
-        stopList.append("<stopfile>").append("\n");
+        stopList.append("</stopfile>").append("\n");
         return stopList.toString();
     }
 
