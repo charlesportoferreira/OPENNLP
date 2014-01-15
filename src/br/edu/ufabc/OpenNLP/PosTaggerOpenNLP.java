@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.edu.ufabc.OpenNLP;
 
 import br.edu.ufabc.teste.Teste;
@@ -25,10 +20,6 @@ import opennlp.tools.tokenize.Tokenizer;
 import opennlp.tools.tokenize.TokenizerME;
 import opennlp.tools.tokenize.TokenizerModel;
 
-/**
- *
- * @author charleshenriqueportoferreira
- */
 public class PosTaggerOpenNLP {
 
     InputStream modelInPosTaggger = null;
@@ -63,7 +54,7 @@ public class PosTaggerOpenNLP {
                 try {
                     modelIn.close();
                 } catch (final IOException e) {
-                } // oh well!
+                }
             }
         }
     }
@@ -79,12 +70,12 @@ public class PosTaggerOpenNLP {
         return taggedText;
     }
 
-    public void printPosTaggedText(String[] tokens, String[] tags) {
+    public StringBuilder getPosTaggedText(String[] tokens, String[] tags) {
         StringBuilder finalText = new StringBuilder();
         for (int i = 0; i < tokens.length; i++) {
             finalText.append(tokens[i]).append("/").append(tags[i]).append(" ");
         }
-        System.out.println(finalText);
+        return finalText;
     }
 
     public List<String> getVerbos(String[] tokens, String[] tags) {
@@ -148,11 +139,8 @@ public class PosTaggerOpenNLP {
             String textPath = textos.get(i);
 
             try {
-                //System.out.print("\r" + "Lendo o arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
                 String[] tokens = tokenizer(Util.lerArquivo(textPath));
-                //System.out.print("\r" + "Adicionando tags ao arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
                 String[] taggedText = posTagger(tokens);
-                // System.out.print("\r" + "extraindo verbos do arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
                 verbos.addAll(getVerbos(tokens, taggedText));
                 System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
 
@@ -164,7 +152,6 @@ public class PosTaggerOpenNLP {
         System.out.println("");
         System.out.println("Número de verbos: " + verbos.size());
         String stopList = Util.insertStopListTag(verbos);
-        //System.out.println(stopList);
         try {
             Util.printFile(diretorio + "/verbos.xml", stopList);
         } catch (IOException ex) {
@@ -181,11 +168,8 @@ public class PosTaggerOpenNLP {
             String textPath = textos.get(i);
 
             try {
-                //  System.out.print("\r" + "Lendo o arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
                 String[] tokens = tokenizer(Util.lerArquivo(textPath));
-                //  System.out.print("\r" + "Adicionando tags ao arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
                 String[] taggedText = posTagger(tokens);
-                //   System.out.print("\r" + "extraindo adverbos do arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
                 adverbios.addAll(getAdverbios(tokens, taggedText));
                 System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
 
@@ -215,7 +199,7 @@ public class PosTaggerOpenNLP {
     }
 
     public void printTokensAndTags() {
-        List<String> verbos = new ArrayList();
+        StringBuilder posTaggedTokens = new StringBuilder();
         String diretorio = System.getProperty("user.dir");
         List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
         int j = 0;
@@ -225,30 +209,67 @@ public class PosTaggerOpenNLP {
                 j++;
                 tokens = tokenizer(Util.lerArquivo(textPath));
                 String[] taggedText = posTagger(tokens);
-                verbos.addAll(getVerbos(tokens, taggedText));
-                //System.out.println("******************" + diretorio + "**********");
-                System.out.print("\rAnalisado arquivo " + j + " de " + textos.size());
-//                for (int i = 0; i < taggedText.length; i++) {
-//                    System.out.println("token: " + tokens[i] + "     tag: " + taggedText[i]);
-//                }
+                posTaggedTokens = getPosTaggedText(tokens, taggedText);
             } catch (IOException ex) {
                 Logger.getLogger(PosTaggerOpenNLP.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        StringBuilder sb = new StringBuilder();
 
-        for (String v : verbos) {
-            sb.append(v);
-            sb.append("\n");
-        }
         try {
-            Util.printFile(diretorio + "/verbos.xml", sb.toString());
+            Util.printFile(diretorio + "/TokenAndTags.xml", posTaggedTokens.toString());
         } catch (IOException ex) {
             Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //System.out.print("\r" + "Adicionando tags ao arquivo " + i + "de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
 
     }
+
+    private void buildPostagger() {
+        // Loading tokenizer model
+        modelInPosTaggger = getClass().getResourceAsStream("/resources/en-pos-maxent.bin");
+        final POSModel posModel;
+        try {
+            posModel = new POSModel(modelInPosTaggger);
+            modelInPosTaggger.close();
+//            POSTaggerME posTagger;
+            posTagger = new POSTaggerME(posModel);
+        } catch (final IOException ioe) {
+            //ioe.printStackTrace();
+            System.out.println("Erro ao tentar executar o postagger");
+        } finally {
+            if (modelInPosTaggger != null) {
+                try {
+                    modelInPosTaggger.close();
+                } catch (final IOException e) {
+                }
+            }
+        }
+
+    }
+
+    private void buildTokenizer() {
+        try {
+
+            // Loading tokenizer model
+            modelInToken = getClass().getResourceAsStream("/resources/en-token.bin");
+            final TokenizerModel tokenModel = new TokenizerModel(modelInToken);
+            modelInToken.close();
+
+            tokenizer = new TokenizerME(tokenModel);
+
+        } catch (final IOException ioe) {
+            //ioe.printStackTrace();
+            System.out.println("Erro ao tentar executar o tokenizador");
+
+        } finally {
+            if (modelInToken != null) {
+                try {
+                    modelInToken.close();
+                } catch (final IOException e) {
+                }
+            }
+        }
+    }
+}
 
 //1. CC Coordinating conjunction
 //2. CD Cardinal number
@@ -286,50 +307,3 @@ public class PosTaggerOpenNLP {
 //34. WP Wh​pronoun
 //35. WP$ Possessive wh​pronoun 
 //36. WRB Wh​adverb
-    private void buildPostagger() {
-        // Loading tokenizer model
-        modelInPosTaggger = getClass().getResourceAsStream("/resources/en-pos-maxent.bin");
-        final POSModel posModel;
-        try {
-            posModel = new POSModel(modelInPosTaggger);
-            modelInPosTaggger.close();
-//            POSTaggerME posTagger;
-            posTagger = new POSTaggerME(posModel);
-        } catch (final IOException ioe) {
-            //ioe.printStackTrace();
-            System.out.println("Erro ao tentar executar o postagger");
-        } finally {
-            if (modelInPosTaggger != null) {
-                try {
-                    modelInPosTaggger.close();
-                } catch (final IOException e) {
-                } // oh well!
-            }
-        }
-
-    }
-
-    private void buildTokenizer() {
-        try {
-
-            // Loading tokenizer model
-            modelInToken = getClass().getResourceAsStream("/resources/en-token.bin");
-            final TokenizerModel tokenModel = new TokenizerModel(modelInToken);
-            modelInToken.close();
-
-            tokenizer = new TokenizerME(tokenModel);
-
-        } catch (final IOException ioe) {
-            //ioe.printStackTrace();
-            System.out.println("Erro ao tentar executar o tokenizador");
-
-        } finally {
-            if (modelInToken != null) {
-                try {
-                    modelInToken.close();
-                } catch (final IOException e) {
-                } // oh well!
-            }
-        }
-    }
-}
