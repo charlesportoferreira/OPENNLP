@@ -24,18 +24,24 @@ public class Util {
 
     public static List<String> filePaths = new ArrayList<>();
 
-    public static void lerNomeArquivos() {
+    public static List<String> lerNomeArquivos(File initialPath, int initialDepth) {
         // Use assim (exemplo): 
-
-        String dir = "/Users/charleshenriqueportoferreira/Documentos/";
-
-        File diretorio = new File("Users/charlehenriqueportoferreira");
-        File[] fList = diretorio.listFiles();
-
-        System.out.println("Numero de arquivos no diretorio : " + fList.length);
-        for (File fList1 : fList) {
-            System.out.println(fList1.toString());
-        }
+//
+//        String dir = "/Users/charleshenriqueportoferreira/Documentos/";
+//
+//        File diretorio = new File("Users/charlehenriqueportoferreira");
+//        File[] fList = diretorio.listFiles();
+//
+//        System.out.println("Numero de arquivos no diretorio : " + fList.length);
+//        for (File fList1 : fList) {
+//            System.out.println(fList1.toString());
+//        }
+        
+        
+        filePaths = new ArrayList<>();
+        List <String> nomeArquivos = fileTreePrinter(initialPath,initialDepth);
+        return nomeArquivos;
+        
     }
 
     public static List<String> fileTreePrinter(File initialPath, int initialDepth) {

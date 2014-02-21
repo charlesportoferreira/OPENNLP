@@ -133,7 +133,8 @@ public class PosTaggerOpenNLP {
     public void geraVerboStopList() {
 
         String diretorio = System.getProperty("user.dir");
-        List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
+        //List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
+        List<String> textos = Util.lerNomeArquivos(new File(diretorio), 0);
         Set<String> verbos = new HashSet<>();
         for (int i = 0; i < textos.size(); i++) {
             String textPath = textos.get(i);
@@ -162,7 +163,8 @@ public class PosTaggerOpenNLP {
     public void geraAdverbiosStopList() {
 
         String diretorio = System.getProperty("user.dir");
-        List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
+        //List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
+        List<String> textos = Util.lerNomeArquivos(new File(diretorio), 0);
         Set<String> adverbios = new HashSet<>();
         for (int i = 0; i < textos.size(); i++) {
             String textPath = textos.get(i);
@@ -269,6 +271,83 @@ public class PosTaggerOpenNLP {
             }
         }
     }
+
+    public void criarListasMescladas(String[] listas) {
+        String nomeArquivoFinal = "";
+        List<String> li = new ArrayList<>();
+        for (String lista : listas) {
+            try {
+                li.add(Util.lerArquivo(lista));
+                nomeArquivoFinal += lista.replace(".xml", "");
+            } catch (IOException ex) {
+                Logger.getLogger(PosTaggerOpenNLP.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+        String listaMesclada = mesclaListas(li);
+        try {
+            Util.printFile(nomeArquivoFinal + ".xml", listaMesclada);
+        } catch (IOException ex) {
+            Logger.getLogger(PosTaggerOpenNLP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public String mesclaListas(List<String> listas) {
+        StringBuilder listaMesclada = new StringBuilder();
+        listaMesclada.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<stopfile>\n");
+
+        for (String lista : listas) {
+            lista = lista.replace("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<stopfile>\n", "");
+            lista = lista.replace("</stopfile>\n", "");
+            listaMesclada.append(lista);
+        }
+
+        listaMesclada.append("</stopfile>\n");
+        return listaMesclada.toString();
+    }
+
+    public void printClasseDasPalavras() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("1. CC Coordinating conjunction\n");
+        sb.append("2. CD Cardinal number\n");
+        sb.append("3. DT Determiner\n");
+        sb.append("4. EX Existential there\n");
+        sb.append("5. FW Foreign word\n");
+        sb.append("6. IN Preposition or subordinating conjunction\n");
+        sb.append("7. JJ Adjective\n");
+        sb.append("8. JJR Adjective, comparative\n");
+        sb.append("9. JJS Adjective, superlative\n");
+        sb.append("10. LS List item marker\n");
+        sb.append("11. MD Modal\n");
+        sb.append("12. NN Noun, singular or mass\n");
+        sb.append("13. NNS Noun, plural\n");
+        sb.append("14. NNP Proper noun, singular\n");
+        sb.append("15. NNPS Proper noun, plural\n");
+        sb.append("16. PDT Predeterminer\n");
+        sb.append("17. POS Possessive ending\n");
+        sb.append("18. PRP Personal pronoun\n");
+        sb.append("19. PRP$ Possessive pronoun\n");
+        sb.append("20. RB Adverb\n");
+        sb.append("21. RBR Adverb, comparative\n");
+        sb.append("22. RBS Adverb, superlative\n");
+        sb.append("23. RP Particle\n");
+        sb.append("24. SYM Symbol\n");
+        sb.append("25. TO to\n");
+        sb.append("26. UH Interjection\n");
+        sb.append("27. VB Verb, base form\n");
+        sb.append("28. VBD Verb, past tense\n");
+        sb.append("29. VBG Verb, gerund or present participle\n");
+        sb.append("30. VBN Verb, past participle\n");
+        sb.append("31. VBP Verb, non​3rd person singular present\n");
+        sb.append("32. VBZ Verb, 3rd person singular present\n");
+        sb.append("33. WDT Wh​determiner\n");
+        sb.append("34. WP Wh​pronoun\n");
+        sb.append("35. WP$ Possessive wh​pronoun\n");
+        sb.append("36. WRB Wh​adverb\n");
+
+        System.out.println(sb);
+    }
+
 }
 
 //1. CC Coordinating conjunction

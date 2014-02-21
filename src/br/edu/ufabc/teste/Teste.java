@@ -1,40 +1,48 @@
-
 package br.edu.ufabc.teste;
 
 import br.edu.ufabc.OpenNLP.PosTaggerOpenNLP;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 public class Teste {
 
-   
     public static void main(String[] args) {
 
         PosTaggerOpenNLP pto = new PosTaggerOpenNLP();
+        List<String> argumentos = new ArrayList<>(Arrays.asList(args));
+        Iterator itr = argumentos.iterator();
+        while (itr.hasNext()) {
+            String argumento = (String) itr.next();
+            if (args.length != 0) {
+                switch (argumento) {
+                    case "-p":
+                        pto.printFilesPath();
+                        break;
+                    case "-v":
+                        pto.geraVerboStopList();
+                        break;
+                    case "-ptt":
+                        pto.printTokensAndTags();
+                        break;
+                    case "-ad":
+                        pto.geraAdverbiosStopList();
+                        break;
+                    case "-m":
+                        String[] listas = ((String) itr.next()).split(",");
+                        pto.criarListasMescladas(listas);
+                    default:
+                        System.out.println("Parâmetro digitado incorretamente");
+                        System.out.println("Parametro: " + argumento);
+                        help();
+                        break;
+                }
+            } else {
 
-        if (args.length != 0) {
-            switch (args[0]) {
-                case "-p":
-                    pto.printFilesPath();
-                    break;
-                case "-v":
-                    pto.geraVerboStopList();
-                    break;
-                case "-ptt":
-                    pto.printTokensAndTags();
-                    break;
-                case "-ad":
-                    pto.geraAdverbiosStopList();
-                    break;
-                default:
-                    System.out.println("Parâmetro digitado incorretamente");
-                    help();
-                    break;
+                help();
             }
-        } else {
-
-            help();
         }
-
     }
 
     public static void help() {
