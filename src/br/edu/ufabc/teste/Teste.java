@@ -12,6 +12,9 @@ public class Teste {
 
         PosTaggerOpenNLP pto = new PosTaggerOpenNLP();
         List<String> argumentos = new ArrayList<>(Arrays.asList(args));
+        if (argumentos.isEmpty()) {
+            help();
+        }
         Iterator itr = argumentos.iterator();
         while (itr.hasNext()) {
             String argumento = (String) itr.next();
@@ -32,6 +35,7 @@ public class Teste {
                     case "-m":
                         String[] listas = ((String) itr.next()).split(",");
                         pto.criarListasMescladas(listas);
+                        break;
                     default:
                         System.out.println("Parâmetro digitado incorretamente");
                         System.out.println("Parametro: " + argumento);
@@ -51,6 +55,8 @@ public class Teste {
         System.out.println("-v = imprime os verbos dos arquivos");
         System.out.println("-ad = imprime os adverbios");
         System.out.println("-ptt = imprime os tokens com seus respectivos tags");
+        System.out.println("-m = mescla varias stoplist para formar uma unica. "
+                + "Os arquivos devem ser separados por virgula, sem espacos");
     }
 
 }

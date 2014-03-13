@@ -89,7 +89,7 @@ public class Util {
         for (String verbo : verbos) {
             verbo = verbo.replaceAll("[^a-zA-Z]", "");
             if (!verbo.matches("")) {
-                stopList.append("<stopword>").append(verbo).append("</stopword>").append("\n");
+                stopList.append("\t<stopword>").append(verbo).append("</stopword>").append("\n");
             }
 
         }
