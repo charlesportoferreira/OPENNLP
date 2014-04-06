@@ -36,6 +36,9 @@ public class Teste {
                         String[] listas = ((String) itr.next()).split(",");
                         pto.criarListasMescladas(listas);
                         break;
+                    case "-c":
+                        pto.countNumeroTokens();
+                        break;
                     default:
                         System.out.println("Parâmetro digitado incorretamente");
                         System.out.println("Parametro: " + argumento);

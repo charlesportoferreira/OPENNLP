@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -128,6 +129,30 @@ public class PosTaggerOpenNLP {
             }
         }
         return adverbios;
+    }
+
+    public void countNumeroTokens() {
+        String diretorio = System.getProperty("user.dir");
+        List<String> textos = Util.lerNomeArquivos(new File(diretorio), 0);
+        Set<String> atributos = new HashSet<>();
+        List<String> atributosComRepeticao = new ArrayList<>();
+        for (int i = 0; i < textos.size(); i++) {
+            String textPath = textos.get(i);
+
+            try {
+                String[] tokens = tokenizer(Util.lerArquivo(textPath));
+                atributos.addAll(Arrays.asList(tokens));
+                atributosComRepeticao.addAll(Arrays.asList(tokens));
+                System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+
+            } catch (IOException ex) {
+                Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        System.out.println("");
+        System.out.println("Número de atributos sem repeticao: " + atributos.size());
+        System.out.println("Número de atributos com repeticao: " + atributosComRepeticao.size());
     }
 
     public void geraVerboStopList() {
