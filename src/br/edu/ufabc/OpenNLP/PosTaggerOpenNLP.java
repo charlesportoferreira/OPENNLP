@@ -111,6 +111,47 @@ public class PosTaggerOpenNLP {
         return verbos;
     }
 
+    
+        public List<String> getAdjetivos(String[] tokens, String[] tags) {
+        List<String> adverbios = new ArrayList<>();
+        for (int i = 0; i < tags.length; i++) {
+            switch (tags[i]) {
+                case "JJ":
+                    adverbios.add(tokens[i]);
+                    break;
+                case "JJR":
+                    adverbios.add(tokens[i]);
+                    break;
+                case "JJS":
+                    adverbios.add(tokens[i]);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return adverbios;
+    }
+        
+            public List<String> getSubstantivos(String[] tokens, String[] tags) {
+        List<String> adverbios = new ArrayList<>();
+        for (int i = 0; i < tags.length; i++) {
+            switch (tags[i]) {
+                case "NN":
+                    adverbios.add(tokens[i]);
+                    break;
+                case "NNS":
+                    adverbios.add(tokens[i]);
+                    break;
+                case "NNPS":
+                    adverbios.add(tokens[i]);
+                    break;
+                default:
+                    break;
+            }
+        }
+        return adverbios;
+    }
+    
     public List<String> getAdverbios(String[] tokens, String[] tags) {
         List<String> adverbios = new ArrayList<>();
         for (int i = 0; i < tags.length; i++) {
@@ -180,6 +221,66 @@ public class PosTaggerOpenNLP {
         String stopList = Util.insertStopListTag(verbos);
         try {
             Util.printFile(diretorio + "/verbos.xml", stopList);
+        } catch (IOException ex) {
+            Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void geraAdjetivoStopList() {
+
+        String diretorio = System.getProperty("user.dir");
+        //List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
+        List<String> textos = Util.lerNomeArquivos(new File(diretorio), 0);
+        Set<String> adjetivos = new HashSet<>();
+        for (int i = 0; i < textos.size(); i++) {
+            String textPath = textos.get(i);
+
+            try {
+                String[] tokens = tokenizer(Util.lerArquivo(textPath));
+                String[] taggedText = posTagger(tokens);
+                adjetivos.addAll(getAdjetivos(tokens, taggedText));
+                System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+
+            } catch (IOException ex) {
+                Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        System.out.println("");
+        System.out.println("Número de adjetivos: " + adjetivos.size());
+        String stopList = Util.insertStopListTag(adjetivos);
+        try {
+            Util.printFile(diretorio + "/adjetivos.xml", stopList);
+        } catch (IOException ex) {
+            Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void geraSubstantivoStopList() {
+
+        String diretorio = System.getProperty("user.dir");
+        //List<String> textos = Util.fileTreePrinter(new File(diretorio), 0);
+        List<String> textos = Util.lerNomeArquivos(new File(diretorio), 0);
+        Set<String> substantivos = new HashSet<>();
+        for (int i = 0; i < textos.size(); i++) {
+            String textPath = textos.get(i);
+
+            try {
+                String[] tokens = tokenizer(Util.lerArquivo(textPath));
+                String[] taggedText = posTagger(tokens);
+                substantivos.addAll(getSubstantivos(tokens, taggedText));
+                System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+
+            } catch (IOException ex) {
+                Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        System.out.println("");
+        System.out.println("Número de substantivos: " + substantivos.size());
+        String stopList = Util.insertStopListTag(substantivos);
+        try {
+            Util.printFile(diretorio + "/substantivos.xml", stopList);
         } catch (IOException ex) {
             Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
         }
