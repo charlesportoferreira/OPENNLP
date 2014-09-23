@@ -38,6 +38,18 @@ public class Teste {
                     case "-sub":
                         pto.geraSubstantivoStopList();
                         break;
+                    case "-ns":
+                        pto.geraTudoExcetoSubstantivosStopList();
+                        break;
+                    case "-nsv":
+                        pto.geraTudoExcetoSubstantivosVerbosStopList();
+                        break;
+                    case "-nsa":
+                        pto.geraTudoExcetoSubstantivosAdjetivosStopList();
+                        break;
+                    case "-nsav":
+                        pto.geraTudoExcetoSubstantivosAdjetivosVerbosStopList();
+                        break;
                     case "-m":
                         String[] listas = ((String) itr.next()).split(",");
                         pto.criarListasMescladas(listas);
@@ -66,6 +78,10 @@ public class Teste {
         System.out.println("-adj = imprime os adjetivos");
         System.out.println("-sub = imprime os substantivos");
         System.out.println("-ptt = imprime os tokens com seus respectivos tags");
+        System.out.println("-ns = imprime todos menos os substantivos");
+        System.out.println("-nsv = imprime todos menos os substantivos e os verbos");
+        System.out.println("-nsa = imprime todos menos os substantivos e os adjetivos");
+        System.out.println("-nsav = imprime todos menos os substantivos, adjetivos e os verbos");
         System.out.println("-m = mescla varias stoplist para formar uma unica. "
                 + "Os arquivos devem ser separados por virgula, sem espacos");
     }

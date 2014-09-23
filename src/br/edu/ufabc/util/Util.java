@@ -82,14 +82,14 @@ public class Util {
         return linha.toString();
     }
 
-    public static String insertStopListTag(Set<String> verbos) {
+    public static String insertStopListTag(Set<String> dados) {
         StringBuilder stopList = new StringBuilder();
         stopList.append("<?xml version=\"1.0\" encoding=\"utf-8\"?>").append("\n").append("<stopfile>").append("\n");
 
-        for (String verbo : verbos) {
-            verbo = verbo.replaceAll("[^a-zA-Z]", "");
-            if (!verbo.matches("")) {
-                stopList.append("\t<stopword>").append(verbo).append("</stopword>").append("\n");
+        for (String dado : dados) {
+            dado = dado.replaceAll("[^a-zA-Z]", "");
+            if (!dado.matches("")) {
+                stopList.append("\t<stopword>").append(dado).append("</stopword>").append("\n");
             }
 
         }
