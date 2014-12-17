@@ -79,6 +79,17 @@ public class PosTaggerOpenNLP {
         return finalText;
     }
 
+    
+    public void geraTodosOsTags(){
+        String tags[] = {"CC", "CD", "DT", "EX", "FW", "IN",
+            "JJ", "JJR", "JJS", "LS", "MD", "NN", "NNS", "NNP", "NNPS", "PDT", "POS", "PRP", "PRP$", "RB",
+            "RBR", "RBS", "RP", "SYM", "TO", "UH", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ", "WDT", "WP",
+            "WP$", "WRB"};
+        
+        for (String tag : tags) {
+            geraPalavraComTagStopList(tag);
+        }
+    }
     public List<String> getVerbos(String[] tokens, String[] tags) {
         List<String> verbos = new ArrayList<>();
         for (int i = 0; i < tags.length; i++) {
@@ -236,6 +247,16 @@ public class PosTaggerOpenNLP {
         return outros;
     }
 
+    public List<String> getPalavraComTag(String[] tokens, String[] tags, String tagEspecifico) {
+        List<String> palavras = new ArrayList<>();
+        for (int i = 0; i < tags.length; i++) {
+            if (!tags[i].equals(tagEspecifico)) {
+                palavras.add(tokens[i]);
+            }
+        }
+        return palavras;
+    }
+
     public void countNumeroTokens() {
         String diretorio = System.getProperty("user.dir");
         List<String> textos = Util.lerNomeArquivos(new File(diretorio), 0);
@@ -258,6 +279,32 @@ public class PosTaggerOpenNLP {
         System.out.println("");
         System.out.println("Número de atributos sem repeticao: " + atributos.size());
         System.out.println("Número de atributos com repeticao: " + atributosComRepeticao.size());
+    }
+
+    public void geraPalavraComTagStopList(String tag) {
+        String diretorio = System.getProperty("user.dir");
+        List<String> textos = Util.lerNomeArquivos(new File(diretorio), 0);
+        Set<String> palavraComTag = new HashSet<>();
+        for (int i = 0; i < textos.size(); i++) {
+            String textPath = textos.get(i);
+            try {
+                String[] tokens = tokenizer(Util.lerArquivo(textPath));
+                String[] taggedText = posTagger(tokens);
+                palavraComTag.addAll(getPalavraComTag(tokens, taggedText, tag));
+                System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+
+            } catch (IOException ex) {
+                Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        System.out.println("");
+        System.out.println("Número de palavras: " + palavraComTag.size());
+        String stopList = Util.insertStopListTag(palavraComTag);
+        try {
+            Util.printFile(diretorio + "/" + tag + ".xml", stopList);
+        } catch (IOException ex) {
+            Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void geraVerboStopList() {
@@ -285,8 +332,7 @@ public class PosTaggerOpenNLP {
             Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
+
     public void geraOutrosStopList() {
         String diretorio = System.getProperty("user.dir");
         List<String> textos = Util.lerNomeArquivos(new File(diretorio), 0);
@@ -312,7 +358,6 @@ public class PosTaggerOpenNLP {
             Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
 
     public void geraTudoExcetoSubstantivosStopList() {
         String diretorio = System.getProperty("user.dir");

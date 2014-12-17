@@ -20,6 +20,9 @@ public class Teste {
             String argumento = (String) itr.next();
             if (args.length != 0) {
                 switch (argumento) {
+                    case "-t":
+                        pto.geraTodosOsTags();
+                        break;
                     case "-p":
                         pto.printFilesPath();
                         break;
@@ -78,6 +81,7 @@ public class Teste {
         System.out.println("-p = imprime arquivos txt da pasta de origem");
         System.out.println("-o = imprime todos exceto verbos, adverbios, adjetivos, substantivos");
         System.out.println("-v = imprime os verbos dos arquivos");
+        System.out.println("-t = imprime varis arquivos com cada tag ");
         System.out.println("-ad = imprime os adverbios");
         System.out.println("-adj = imprime os adjetivos");
         System.out.println("-sub = imprime os substantivos");
