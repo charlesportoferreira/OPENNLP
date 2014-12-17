@@ -162,23 +162,23 @@ public class PosTaggerOpenNLP {
     }
 
     public List<String> getAdjetivos(String[] tokens, String[] tags) {
-        List<String> adverbios = new ArrayList<>();
+        List<String> adjetivos = new ArrayList<>();
         for (int i = 0; i < tags.length; i++) {
             switch (tags[i]) {
                 case "JJ":
-                    adverbios.add(tokens[i]);
+                    adjetivos.add(tokens[i]);
                     break;
                 case "JJR":
-                    adverbios.add(tokens[i]);
+                    adjetivos.add(tokens[i]);
                     break;
                 case "JJS":
-                    adverbios.add(tokens[i]);
+                    adjetivos.add(tokens[i]);
                     break;
                 default:
                     break;
             }
         }
-        return adverbios;
+        return adjetivos;
     }
 
     public List<String> getSubstantivos(String[] tokens, String[] tags) {
@@ -219,6 +219,21 @@ public class PosTaggerOpenNLP {
             }
         }
         return adverbios;
+    }
+
+    public List<String> getOutros(String[] tokens, String[] tags) {
+        List<String> outros = new ArrayList<>();
+        for (int i = 0; i < tags.length; i++) {
+            if (!tags[i].equals("VB") && !tags[i].equals("VBD") && !tags[i].equals("VBG")
+                    && !tags[i].equals("VBN") && !tags[i].equals("VBP") && !tags[i].equals("VBZ")
+                    && !tags[i].equals("MD") && !tags[i].equals("JJ") && !tags[i].equals("JJR")
+                    && !tags[i].equals("JJS") && !tags[i].equals("NN") && !tags[i].equals("NNS")
+                    && !tags[i].equals("NNPS") && !tags[i].equals("RB") && !tags[i].equals("RBS")
+                    && !tags[i].equals("RBR")) {
+                outros.add(tokens[i]);
+            }
+        }
+        return outros;
     }
 
     public void countNumeroTokens() {
@@ -270,6 +285,34 @@ public class PosTaggerOpenNLP {
             Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
+    public void geraOutrosStopList() {
+        String diretorio = System.getProperty("user.dir");
+        List<String> textos = Util.lerNomeArquivos(new File(diretorio), 0);
+        Set<String> outros = new HashSet<>();
+        for (int i = 0; i < textos.size(); i++) {
+            String textPath = textos.get(i);
+            try {
+                String[] tokens = tokenizer(Util.lerArquivo(textPath));
+                String[] taggedText = posTagger(tokens);
+                outros.addAll(getOutros(tokens, taggedText));
+                System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+
+            } catch (IOException ex) {
+                Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        System.out.println("");
+        System.out.println("Número de outros: " + outros.size());
+        String stopList = Util.insertStopListTag(outros);
+        try {
+            Util.printFile(diretorio + "/outros.xml", stopList);
+        } catch (IOException ex) {
+            Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 
     public void geraTudoExcetoSubstantivosStopList() {
         String diretorio = System.getProperty("user.dir");
@@ -352,13 +395,13 @@ public class PosTaggerOpenNLP {
     public void geraTudoExcetoSubstantivosVerbosStopList() {
         String diretorio = System.getProperty("user.dir");
         List<String> textos = Util.lerNomeArquivos(new File(diretorio), 0);
-        Set<String> verbos = new HashSet<>();
+        Set<String> tudoExcetoSubstantivosVerbos = new HashSet<>();
         for (int i = 0; i < textos.size(); i++) {
             String textPath = textos.get(i);
             try {
                 String[] tokens = tokenizer(Util.lerArquivo(textPath));
                 String[] taggedText = posTagger(tokens);
-                verbos.addAll(getTudoExcetoSubstantivosVerbos(tokens, taggedText));
+                tudoExcetoSubstantivosVerbos.addAll(getTudoExcetoSubstantivosVerbos(tokens, taggedText));
                 System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
 
             } catch (IOException ex) {
@@ -366,10 +409,10 @@ public class PosTaggerOpenNLP {
             }
         }
         System.out.println("");
-        System.out.println("Número de verbos: " + verbos.size());
-        String stopList = Util.insertStopListTag(verbos);
+        System.out.println("Número de verbos: " + tudoExcetoSubstantivosVerbos.size());
+        String stopList = Util.insertStopListTag(tudoExcetoSubstantivosVerbos);
         try {
-            Util.printFile(diretorio + "/verbos.xml", stopList);
+            Util.printFile(diretorio + "/excetoSubstantivosVerbos.xml", stopList);
         } catch (IOException ex) {
             Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -23,6 +23,9 @@ public class Teste {
                     case "-p":
                         pto.printFilesPath();
                         break;
+                    case "-o":
+                        pto.geraOutrosStopList();
+                        break;
                     case "-v":
                         pto.geraVerboStopList();
                         break;
@@ -73,6 +76,7 @@ public class Teste {
     public static void help() {
         System.out.println("Faltou passar algum argumento:");
         System.out.println("-p = imprime arquivos txt da pasta de origem");
+        System.out.println("-o = imprime todos exceto verbos, adverbios, adjetivos, substantivos");
         System.out.println("-v = imprime os verbos dos arquivos");
         System.out.println("-ad = imprime os adverbios");
         System.out.println("-adj = imprime os adjetivos");
