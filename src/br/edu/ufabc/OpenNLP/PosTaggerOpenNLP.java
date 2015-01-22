@@ -250,7 +250,7 @@ public class PosTaggerOpenNLP {
     public List<String> getPalavraComTag(String[] tokens, String[] tags, String tagEspecifico) {
         List<String> palavras = new ArrayList<>();
         for (int i = 0; i < tags.length; i++) {
-            if (!tags[i].equals(tagEspecifico)) {
+            if (tags[i].equals(tagEspecifico)) {
                 palavras.add(tokens[i]);
             }
         }
