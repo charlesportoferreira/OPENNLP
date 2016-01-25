@@ -64,13 +64,13 @@ public class Teste {
                         pto.countNumeroTokens();
                         break;
                     default:
-                        System.out.println("Parâmetro digitado incorretamente");
+                        System.out.println("Parametro incorreto");
                         System.out.println("Parametro: " + argumento);
                         help();
                         break;
                 }
             } else {
-
+                
                 help();
             }
         }
