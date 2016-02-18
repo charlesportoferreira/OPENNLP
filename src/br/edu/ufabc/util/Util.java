@@ -91,7 +91,6 @@ public class Util {
             if (!dado.matches("")) {
                 stopList.append("\t<stopword>").append(dado).append("</stopword>").append("\n");
             }
-
         }
         stopList.append("</stopfile>").append("\n");
         return stopList.toString();

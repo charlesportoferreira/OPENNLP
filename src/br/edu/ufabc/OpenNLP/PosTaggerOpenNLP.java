@@ -79,17 +79,18 @@ public class PosTaggerOpenNLP {
         return finalText;
     }
 
-    
-    public void geraTodosOsTags(){
+    public void geraTodosOsTags() {
         String tags[] = {"CC", "CD", "DT", "EX", "FW", "IN",
             "JJ", "JJR", "JJS", "LS", "MD", "NN", "NNS", "NNP", "NNPS", "PDT", "POS", "PRP", "PRP$", "RB",
             "RBR", "RBS", "RP", "SYM", "TO", "UH", "VB", "VBD", "VBG", "VBN", "VBP", "VBZ", "WDT", "WP",
             "WP$", "WRB"};
-        
+
         for (String tag : tags) {
-            geraPalavraComTagStopList(tag);
+            //geraPalavraComTagStopList(tag);
+            geraPalavraComTag(tag);
         }
     }
+
     public List<String> getVerbos(String[] tokens, String[] tags) {
         List<String> verbos = new ArrayList<>();
         for (int i = 0; i < tags.length; i++) {
@@ -302,6 +303,38 @@ public class PosTaggerOpenNLP {
         String stopList = Util.insertStopListTag(palavraComTag);
         try {
             Util.printFile(diretorio + "/" + tag + ".xml", stopList);
+        } catch (IOException ex) {
+            Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void geraPalavraComTag(String tag) {
+        String diretorio = System.getProperty("user.dir");
+        List<String> textos = Util.lerNomeArquivos(new File(diretorio), 0);
+        Set<String> palavraComTag = new HashSet<>();
+        for (int i = 0; i < textos.size(); i++) {
+            String textPath = textos.get(i);
+            try {
+                String[] tokens = tokenizer(Util.lerArquivo(textPath));
+                String[] taggedText = posTagger(tokens);
+                palavraComTag.addAll(getPalavraComTag(tokens, taggedText, tag));
+                System.out.print("\r" + "Analisado arquivo " + i + " de " + textos.size() + "   " + (i * 100) / textos.size() + "%");
+
+            } catch (IOException ex) {
+                Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        System.out.println("");
+        System.out.println("Número de palavras(" + tag + "): " + palavraComTag.size());
+        StringBuilder stopList = new StringBuilder();//= Util.insertStopListTag(palavraComTag);
+        for (String dado : palavraComTag) {
+            dado = dado.replaceAll("[^a-zA-Z]", "");
+            if (!dado.matches("")) {
+                stopList.append(dado).append("\n");
+            }
+        }
+        try {
+            Util.printFile(diretorio + "/" + tag + ".text", stopList.toString());
         } catch (IOException ex) {
             Logger.getLogger(Teste.class.getName()).log(Level.SEVERE, null, ex);
         }
