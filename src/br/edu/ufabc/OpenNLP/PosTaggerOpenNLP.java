@@ -86,7 +86,7 @@ public class PosTaggerOpenNLP {
             "WP$", "WRB"};
 
         for (String tag : tags) {
-            //geraPalavraComTagStopList(tag);
+            geraPalavraComTagStopList(tag);
             geraPalavraComTag(tag);
         }
     }
