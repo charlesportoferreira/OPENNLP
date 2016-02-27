@@ -87,7 +87,7 @@ public class PosTaggerOpenNLP {
 
         for (String tag : tags) {
             geraPalavraComTagStopList(tag);
-            geraPalavraComTag(tag);
+            //geraPalavraComTag(tag);
         }
     }
 
